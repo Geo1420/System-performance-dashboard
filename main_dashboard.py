@@ -15,6 +15,39 @@ class SystemInfoDashboard:
         self.root.title("System Information Dashboard")
         self.root.geometry("800x600")
         
+        # Configure dark theme colors
+        self.bg_color = "#1E1E1E"  # Dark background
+        self.fg_color = "#FFFFFF"  # White text
+        self.accent_color = "#00FF9D"  # Neon green accent
+        self.frame_bg = "#2D2D2D"  # Slightly lighter background for frames
+        self.button_bg = "#3D3D3D"  # Button background
+        self.button_fg = "#FFFFFF"  # Button text color
+        self.button_hover = "#4D4D4D"  # Button hover color
+        self.button_active = "#00FF9D"  # Button active color
+        
+        # Configure root window
+        self.root.configure(bg=self.bg_color)
+        
+        # Configure ttk styles
+        self.style = ttk.Style()
+        self.style.configure("TFrame", background=self.bg_color)
+        self.style.configure("TLabelframe", background=self.frame_bg, foreground=self.fg_color)
+        self.style.configure("TLabelframe.Label", background=self.frame_bg, foreground=self.accent_color)
+        self.style.configure("TLabel", background=self.frame_bg, foreground=self.fg_color)
+        
+        # Configure button styles
+        self.style.configure("Custom.TButton",
+                           background=self.button_bg,
+                           foreground=self.button_fg,
+                           padding=10,
+                           font=('Helvetica', 10, 'bold'))
+        
+        self.style.map("Custom.TButton",
+                      background=[('active', self.button_hover),
+                                ('pressed', self.button_active)],
+                      foreground=[('active', self.accent_color),
+                                ('pressed', self.accent_color)])
+        
         # Create main frame
         self.main_frame = ttk.Frame(root)
         self.main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
@@ -52,8 +85,15 @@ class SystemInfoDashboard:
             ("GPU Load", self.open_gpu_dashboard)
         ]
         
+        # Create a frame for button layout
+        button_container = ttk.Frame(self.buttons_frame)
+        button_container.pack(padx=10, pady=10)
+        
         for text, command in resources:
-            button = ttk.Button(self.buttons_frame, text=text, command=command)
+            button = ttk.Button(button_container, 
+                              text=text, 
+                              command=command,
+                              style="Custom.TButton")
             button.pack(side=tk.LEFT, padx=10, pady=5)
     
     def open_ram_dashboard(self):
@@ -123,4 +163,4 @@ class SystemInfoDashboard:
 if __name__ == "__main__":
     root = tk.Tk()
     app = SystemInfoDashboard(root)
-    root.mainloop() 
+    root.mainloop()
