@@ -37,9 +37,31 @@ class RamDashboard:
         self.usage_frame = ttk.LabelFrame(self.main_frame, text="Current Usage")
         self.usage_frame.pack(fill=tk.X, pady=10)
         
-        # Create usage label
+        # Create detailed RAM information labels
         self.usage_label = ttk.Label(self.usage_frame, text="RAM Usage: 0%")
         self.usage_label.pack(pady=5)
+        
+        self.total_ram_label = ttk.Label(self.usage_frame, text="Total RAM: 0 GB")
+        self.total_ram_label.pack(pady=2)
+        
+        self.used_ram_label = ttk.Label(self.usage_frame, text="Used RAM: 0 GB")
+        self.used_ram_label.pack(pady=2)
+        
+        self.available_ram_label = ttk.Label(self.usage_frame, text="Available RAM: 0 GB")
+        self.available_ram_label.pack(pady=2)
+        
+        # Create swap memory frame
+        self.swap_frame = ttk.LabelFrame(self.main_frame, text="Swap Memory")
+        self.swap_frame.pack(fill=tk.X, pady=10)
+        
+        self.swap_total_label = ttk.Label(self.swap_frame, text="Total Swap: 0 GB")
+        self.swap_total_label.pack(pady=2)
+        
+        self.swap_used_label = ttk.Label(self.swap_frame, text="Used Swap: 0 GB")
+        self.swap_used_label.pack(pady=2)
+        
+        self.swap_free_label = ttk.Label(self.swap_frame, text="Free Swap: 0 GB")
+        self.swap_free_label.pack(pady=2)
         
         # Create graph frame
         self.graph_frame = ttk.LabelFrame(self.main_frame, text="Usage Gauge")
@@ -67,10 +89,28 @@ class RamDashboard:
         else:
             return '#FF4444'  # Bright red
     
+    def format_bytes(self, bytes_value):
+        gb = bytes_value / (1024**3)
+        return f"{gb:.2f} GB"
+    
     def update_metrics(self):
         while True:
-            self.usage = psutil.virtual_memory().percent
+            # Get RAM information
+            ram = psutil.virtual_memory()
+            self.usage = ram.percent
+            
+            # Update RAM labels
             self.usage_label.config(text=f"RAM Usage: {self.usage}%")
+            self.total_ram_label.config(text=f"Total RAM: {self.format_bytes(ram.total)}")
+            self.used_ram_label.config(text=f"Used RAM: {self.format_bytes(ram.used)}")
+            self.available_ram_label.config(text=f"Available RAM: {self.format_bytes(ram.available)}")
+            
+            # Get swap information
+            swap = psutil.swap_memory()
+            self.swap_total_label.config(text=f"Total Swap: {self.format_bytes(swap.total)}")
+            self.swap_used_label.config(text=f"Used Swap: {self.format_bytes(swap.used)}")
+            self.swap_free_label.config(text=f"Free Swap: {self.format_bytes(swap.free)}")
+            
             self.update_gauge()
             time.sleep(1)
     

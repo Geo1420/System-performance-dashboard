@@ -15,14 +15,14 @@ class SystemInfoDashboard:
         self.root.title("System Information Dashboard")
         self.root.geometry("800x600")
         
-        # Configure dark theme colors
+        # Configure theme colors
         self.bg_color = "#1E1E1E"  # Dark background
         self.fg_color = "#FFFFFF"  # White text
         self.accent_color = "#00FF9D"  # Neon green accent
         self.frame_bg = "#2D2D2D"  # Slightly lighter background for frames
-        self.button_bg = "#3D3D3D"  # Button background
-        self.button_fg = "#FFFFFF"  # Button text color
-        self.button_hover = "#4D4D4D"  # Button hover color
+        self.button_bg = "#000000"  # Black button background
+        self.button_fg = "#000000"  # Button text color
+        self.button_hover = "#1A1A1A"  # Slightly lighter black for hover
         self.button_active = "#00FF9D"  # Button active color
         
         # Configure root window
